@@ -1,0 +1,36 @@
+#==========================================
+# Purpose: This function calcluates the relativistic length contraction
+#          of any two objects
+# Input Parameter(s):
+#       dist: the original distance (in meters) between two objects
+#       speed: the speed (in meters/second) at which the user is travelling
+#              relative to the two objects
+# Return Value(s): the contracted distance between the two objects from
+#                  the users' reference frame
+#==========================================
+def length_contract(dist, speed):
+    c = 300000000
+    LO = dist
+    v = speed
+    L = LO * ((1 - (v**2)/(c**2))**.5)
+    return L
+
+#==========================================
+# Purpose: This function converts the distance of the Bessel Run from parsecs to meters
+# Input Parameter(s): None
+# Return Value(s): The distance of the Bessel Run in meters
+#==========================================
+def bessel_run_distance():
+    distance = 3.089 * (10**16) * 12
+    return distance
+
+#==========================================
+# Purpose: This function calculates the time required to traverse the Bessel Run
+# Input Parameter(s): speed - bessel's average speed in the run
+# Return Value(s): The time required to traverse the Bessel Run in years
+#==========================================
+def bessel_run(speed):
+    time_observer = ((bessel_run_distance() / speed) / 31557600)
+    print(time_observer)
+    time_bessel = (length_contract(bessel_run_distance(), speed) / speed) / 31557600
+    return time_bessel
