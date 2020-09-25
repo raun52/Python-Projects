@@ -1,0 +1,75 @@
+#==========================================
+# Purpose:
+#   Extract the data from a CSV file as a list of rows
+# Input Parameter(s):
+#   fname is a string representing the name of a file
+# Return Value:
+#   Returns a list of every line in that file (a list of strings)
+#   OR returns -1 if the file does not exist
+#==========================================
+def get_data_list(fname):
+    try:
+        with open(fname, 'r') as f:
+            return f.readlines()
+    except:
+        return -1
+
+#==========================================
+# Purpose:
+#   Determine which column stores the grades for hw8
+# Input Parameter(s):
+#   row1_str is a string containing the first row of data 
+#   (the column titles) in the CSV file
+# Return Value:
+#   Returns the index of the column labelled 'hw8 Grade' (an integer)
+#   OR returns -1 if there is no column labelled 'hw8 Grade'
+#==========================================
+def hw8_index(row1_str):     
+    listName = row1_str.split(',')
+    for i in range(len(listName)):
+        if listName[i] == 'hw8 Grade':
+            return i
+        else:
+            pass
+    return -1
+
+#==========================================
+# Purpose:
+#   Change the hw8 grade in your row string to '40'
+# Input Parameter(s):
+#   row_str is a string containing any row of data from the CSV file
+#   idx is an index for the column you want to alter
+# Return Value:
+#   Returns a string identical to row_str, except with the column
+#   at the given index changed to '40'
+#==========================================
+def alter_grade(row_str,idx):
+    listName = row_str.split(',')
+    listName[idx]='40'
+    grades = ','.join(listName)
+    return grades
+
+#==========================================
+# Purpose:
+#   Alters a gradebook CSV file so that your score on hw8 is '40'
+# Input Parameter(s):
+#   fname is the file name of the gradebook file
+# Return Value:
+#   Returns False if the file isn't open
+#   Returns False if the file doesn't contain a 'hw8 Grade' column
+#   Otherwise, returns True
+#==========================================
+def haxx(fname):
+    try:
+        file = get_data_list(fname)
+        index = hw8_index(file[0])
+        f = open(fname, 'w')
+        for i in file:
+            if 'Raunak Pandey' in i:
+                f.write(alter_grade(i, index))
+                return True
+            else:
+                f.write(i)
+        f.close()
+    except:
+        return False  
