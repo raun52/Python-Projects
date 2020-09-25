@@ -1,0 +1,80 @@
+import random
+
+#==========================================
+# Purpose: This function tells you the first word of every sentence in a file in order
+# Input Parameter(s): fname - a string representing the name of a file
+# Return Value(s): a list of the first word in every sentence in
+#                  that file, in order, including duplicates.
+#==========================================
+def first_words(fname):
+  openfileandread = open(fname, 'r')
+  filelist = []
+  for i in openfileandread:
+    line = i
+    words = i.split()
+    filelist.append(words[0])
+    firstwords = filelist
+  return firstwords
+
+#==========================================
+# Purpose: This function returns a dictionary where the keys are,
+#           each distinct word the file (case matters), and the
+#           value for any given key is a list of word that follows
+#           that key anywhere in the file, in order, including duplicates.
+# Input Parameter: fname - a string representing the name of a file in
+# Return Value(s): a dictionary where the keys are, each distinct word
+#                  the file (case matters), and the value for any given
+#                  key is a list of word that follows that key anywhere
+#                  in the file, in order, including duplicates
+#==========================================
+def next_words(fname):
+  openfileandread = open(fname, 'r')
+  filelist = []
+  filedictionary = {}
+  for i in openfileandread:
+    words = i.split()
+    for j in range(len(words)-1):
+      k = j + 1
+      if words[j] in filedictionary:
+        filedictionary[words[j]].append(words[k])
+      else:
+        filedictionary[words[j]] = [words[k]]
+  return filedictionary
+
+#==========================================
+# Purpose: This function tells you a really bad fan fiction, using first_words and next_words functions.
+# Input Parameter: fname - a string representing the name of a file
+# Return Value(s): None, but prints 10 ‘sentences’, one per line, based on that file
+#==========================================
+def fanfic(fname):
+  reallybadfanfiction = ''
+  worddictionary = next_words(fname)
+  sentencecount = 0
+  while sentencecount < 11:
+    word = random.choice(first_words(fname))
+    reallybadfanfiction = reallybadfanfiction + word + ' '
+    while word != '.' and word != '.\n':
+      word = random.choice(worddictionary[word])
+      reallybadfanfiction = reallybadfanfiction + word + ' '
+    reallybadfanfiction += '\n'
+    sentencecount += 1
+  print(reallybadfanfiction)
+
+#==========================================
+# Purpose: This function tells you the total memory in bytes of txt files in a directory 
+# Input Parameter(s): directory - a nested dictionary representing a directory
+# Return Value(s): the total memory in bytes (an integer) being used by txt files
+#                  in a directory
+#==========================================
+def total_txt_size(directory):
+  x = 0
+  for i in directory:
+    if type(directory[i]) == int:
+      if i[-3:] == 'txt':
+        x += directory[i]
+      else:
+        pass
+    else:
+      if type(directory[i]) == dict:
+        x += total_txt_size(directory[i])
+  return x
