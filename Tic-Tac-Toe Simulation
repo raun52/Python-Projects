@@ -1,0 +1,91 @@
+import random      
+
+#==========================================
+# Purpose: This function tells you how many empty spaces are on a tic-tac-toe board
+# Input Parameter(s): board list of 9 strings, either 'X', 'O', '-'
+# Return Value(s): a list of the index values that are empty ('-') in the list
+#==========================================
+def open_slots(board):
+    openSlotCount = []
+    for i in range(len(board)):
+        if board[i] == '-':
+            openSlotCount.append(i)
+    return openSlotCount
+
+#==========================================
+# Purpose: This function tells you the winner of a tic-tac-toe game
+# Input Parameter(s): tic-tac-toe board game
+# Return Value(s): Either 'X' or 'O' depending on who won. 'D' if the game
+#                  is tied. '-' if the game isn't finished and there are
+#v                 still empty spaces.
+#==========================================
+def winner(board):
+    if board[0] == board[4] == board[8]:
+            if board[0] != '-':
+                return board[0]
+    elif board[2] == board[4] == board[6]:
+            if board[2] != '-':
+                return board[2]
+    elif board[0] == board[3] == board[6]:
+            if board[0] != '-':
+                return board[0]
+    elif board[1] == board[4] == board[7]:
+            if board[1] != '-':
+                return board[1]
+    elif board[2] == board[5] == board[8]:
+            if board[2] != '-':
+                return board[2]
+    elif board[0] == board[1] == board[2]:
+            if board[0] != '-':
+                return board[0]
+    elif board[3] == board[4] == board[5]:
+            if board[3] != '-':
+                return board[3]
+    elif board[6] == board[7] == board[8]:
+            if board[6] != '-':
+                return board[6]
+    elif len(open_slots(board)) == 0:
+        return 'D'
+    else:
+        return '-'
+
+#==========================================
+# Purpose: This function creates a random tic tac toe game and returns who won
+# Input Parameter(s): None
+# Return Value(s): String value of either X or O depending on which one won.
+#                  If it's a draw then it returns B 
+#==========================================
+def tic_tac_toe():
+    board = ['-','-','-','-','-','-','-','-','-']
+    player = 'X'
+    i = 0
+    while True:
+        j = random.choice(open_slots(board))
+        if i % 2 == 0:
+            player = 'X'
+        board[j] = player
+        player = 'O'
+        i += 1
+        place = winner(board)
+        if place != '-':
+            return place
+
+#==========================================
+# Purpose: This function runs multiple games of tic_tac_toe 
+# Input Parameter(s): n - number of games played
+# Return Value(s): None
+#==========================================
+def play_games(n):
+    x = 0
+    o = 0
+    draw = 0
+    for i in range(n):
+        if tic_tac_toe() == 'X':
+            x += 1
+        elif tic_tac_toe() == 'O':
+            o += 1
+        else:
+            draw += 1
+    print("X wins: ", x)
+    print("O wins: ", o)
+    print("Draws: ", draw)
